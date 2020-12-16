@@ -1,0 +1,44 @@
+pipeline {
+	agent any
+	stages {
+		stage('Build') { 
+			tools {
+				jdk 'jdk8'
+				maven 'apache-maven-3.6.3'
+			}
+			steps {
+				powershell 'java -version'
+				powershell 'mvn -version'
+				powershell 'mvn -f happytrip-code/pom.xml clean install'
+
+			}
+		}
+		//stage('SonarQube Analysis') {
+		  //  steps {
+		  //  withSonarQubeEnv(installationName: 'sonarqube', credentialsId: '01d00282-f294-4187-bc24-74e0b702a5d2') {
+          //  echo 'entered the Sonar steps'
+		  //  powershell 'cd happytrip-code'
+		  //  powershell 'mvn -f happytrip-code/pom.xml clean install package sonar:sonar'
+        //}
+		    
+		  //  }
+	//}
+		stage('Deploy') {
+			steps{
+				echo "Deploying"
+				deploy adapters: [tomcat7(credentialsId: '41931ef5-1377-4f72-8bf4-b99e21b3c332', path: '', url: 'http://localhost:8081')], contextPath: 'happytrip', war: '**/*.war'
+			}
+		}
+	}
+	//post {
+      //  always {
+            //archiveArtifacts artifacts: 'generatedFile.log', onlyIfSuccessful: true was commented
+          
+            //emailext attachLog: true,
+              //  body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                //recipientProviders: [developers(), requestor()],
+                //subject: "Jenkins Build :- ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        //}
+    //}
+}
