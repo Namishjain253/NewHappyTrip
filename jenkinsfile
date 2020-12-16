@@ -9,7 +9,7 @@ pipeline {
 			steps {
 				bat 'java -version'
 				bat 'mvn -version'
-				bat 'mvn -f happytrip-code/pom.xml clean install'
+				bat 'mvn -f happytrip-code/pom.xml install'
 
 			}
 		}
