@@ -7,9 +7,9 @@ pipeline {
         			jdk 'JAVA_HOME'
 			}
 			steps {
-				powershell 'java -version'
-				powershell 'mvn -version'
-				powershell 'mvn -f happytrip-code/pom.xml clean install'
+				bat 'java -version'
+				bat 'mvn -version'
+				bat 'mvn -f happytrip-code/pom.xml clean install'
 
 			}
 		}
